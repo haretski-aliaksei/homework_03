@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="ParserSuite" verbose="1" >
+    <test name="test for parser" >
+        <classes>
+            <class name="parser.ParserTests" />
+        </classes>
+    </test>
+</suite>

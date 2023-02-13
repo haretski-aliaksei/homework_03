@@ -42,4 +42,11 @@ public class MyArrayListTest {
         testingArray.add(4);
         Assert.assertEquals(testingArray.get(1).intValue(), 4);
     }
+
+    @Test(dependsOnMethods = "testAddElement")
+    public void testSetElement() {
+        testingArray.add(5);
+        testingArray.set(0, 6);
+        Assert.assertEquals(testingArray.get(0).intValue(), 6);
+    }
 }

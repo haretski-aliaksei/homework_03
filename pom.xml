@@ -42,7 +42,6 @@
                 <version>3.0.0-M4</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <!-- сюда пишем наши сьюты -->
                         <suiteXmlFile>unit-testng.xml</suiteXmlFile>
                         <suiteXmlFile>integration-testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
