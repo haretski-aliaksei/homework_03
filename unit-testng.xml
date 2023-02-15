@@ -11,4 +11,9 @@
             <class name="collections.MyStackTest"/>
         </classes>
     </test>
+    <test name="test for exceptions" >
+        <classes>
+            <class name="collections.ExpectedExceptionTests" />
+        </classes>
+    </test>
 </suite>

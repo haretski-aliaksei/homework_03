@@ -5,7 +5,7 @@ import utilities.Iterator;
 public class ProgramRunner {
 
     public static void main(String[] args) {
-        XMLParser parser = new XMLParser("src/test/resources/errorUnexpectedTag.xml");
+        XMLParser parser = new XMLParser("src/test/resources/errorCommentXML.xml");
         parser.parseDocument();
         if (parser.getErrors().isEmpty()) {
             System.out.println("Valid xml");

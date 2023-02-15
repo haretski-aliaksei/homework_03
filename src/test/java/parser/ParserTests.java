@@ -1,16 +1,22 @@
 package parser;
 
+import Helpers.TextHelpers;
 import org.testng.annotations.Test;
 import org.testng.asserts.Assertion;
 import utilities.Iterator;
 
+import java.lang.reflect.Field;
+
+import static org.testng.Assert.assertEquals;
+
 public class ParserTests {
+
+    Assertion assertion = new Assertion();
 
     @Test(groups = "validationTests")
     public void getXMLErrorsTest() {
-        Assertion assertion = new Assertion();
         XMLParser parser = new XMLParser("src/test/resources/errorUnexpectedTag.xml");
-        String expected = "Unexpected closing tag contact";
+        String expected = TextHelpers.UNEXPECTED_TAG_TEXT.getTextHelper();
         parser.parseDocument();
         Iterator<String> errorsIter = parser.getErrors().iterator();
         String actual = errorsIter.next();
@@ -19,7 +25,6 @@ public class ParserTests {
 
     @Test(groups = "validationTests")
     public void getValidXMLTest() {
-        Assertion assertion = new Assertion();
         XMLParser parser = new XMLParser("src/test/resources/validXML.xml");
         parser.parseDocument();
         assertion.assertTrue(parser.getErrors().isEmpty());
@@ -27,9 +32,8 @@ public class ParserTests {
 
     @Test(groups = "validationTests")
     public void checkValidationRootTagTest() {
-        Assertion assertion = new Assertion();
         XMLParser parser = new XMLParser("src/test/resources/errorRootTag.xml");
-        String expected = "Document should start from root tag or instruction. ";
+        String expected = TextHelpers.START_WITH_ROOT_TAG_TEXT.getTextHelper();
         parser.parseDocument();
         Iterator<String> errorsIter = parser.getErrors().iterator();
         String actual = errorsIter.next();
@@ -38,9 +42,8 @@ public class ParserTests {
 
     @Test(groups = "validationTests")
     public void checkValidationCloseRootTagTest() {
-        Assertion assertion = new Assertion();
         XMLParser parser = new XMLParser("src/test/resources/errorCloseRootTag.xml");
-        String expected = "Instruction tag is not closed";
+        String expected = TextHelpers.CLOSE_ROOT_TAG_TEXT.getTextHelper();
         parser.parseDocument();
         Iterator<String> errorsIter = parser.getErrors().iterator();
         String actual = errorsIter.next();
@@ -49,9 +52,8 @@ public class ParserTests {
 
     @Test(groups = "validationTests")
     public void checkValidationDataInRootTagTest() {
-        Assertion assertion = new Assertion();
         XMLParser parser = new XMLParser("src/test/resources/errorDataInRootTag.xml");
-        String expected = "All data should be inside of the root tag";
+        String expected = TextHelpers.ALL_DATA_IN_ROOT_TAG_TEXT.getTextHelper();
         parser.parseDocument();
         Iterator<String> errorsIter = parser.getErrors().iterator();
         String actual = errorsIter.next();
@@ -60,9 +62,8 @@ public class ParserTests {
 
     @Test(groups = "validationTests")
     public void checkValidationFormatTagTest() {
-        Assertion assertion = new Assertion();
         XMLParser parser = new XMLParser("src/test/resources/errorFormatTag.xml");
-        String expected = "Tag contacts name never closed. Tag names must have format <name>.";
+        String expected = TextHelpers.TAG_FORMAT_TEXT.getTextHelper();
         parser.parseDocument();
         Iterator<String> errorsIter = parser.getErrors().iterator();
         String actual = errorsIter.next();
@@ -71,12 +72,27 @@ public class ParserTests {
 
     @Test(groups = "validationTests")
     public void checkValidationCloseTagTest() {
-        Assertion assertion = new Assertion();
         XMLParser parser = new XMLParser("src/test/resources/errorCloseTag.xml");
-        String expected = "The tag  closed incorrectly. Missing >";
+        String expected = TextHelpers.CLOSE_TAG_TEXT.getTextHelper();
         parser.parseDocument();
         Iterator<String> errorsIter = parser.getErrors().iterator();
         String actual = errorsIter.next();
         assertion.assertEquals(actual, expected);
+    }
+
+    @Test(groups = "simpleTests")
+    public void testGetNameFromRoot(){
+        XMLParser parser = new XMLParser("src/test/resources/validXML.xml");
+        parser.parseDocument();
+        String xmlTageName;
+        try {
+            Field field = parser.getClass().getDeclaredField("root");
+            field.setAccessible(true);
+            XMLTag xmlTag = (XMLTag) field.get(parser);
+            xmlTageName = xmlTag.getName();
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(xmlTageName, "contacts");
     }
 }
