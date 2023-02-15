@@ -14,6 +14,7 @@ public class MyStackTest {
         testingStack = new MyStack<>();
     }
 
+    @Test(groups = "additionTests")
     public void testInitialSize() {
         Assert.assertEquals(testingStack.size(), 0);
     }
